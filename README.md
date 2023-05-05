@@ -1,6 +1,6 @@
 # Matcher Documentation
 
-The `matcher` package within elauneind contains the core expression language
+The `matcher` package contains the core expression language
 for matching `captainslog.SyslogMsg` data in an intuitive and expressive way.
 
 The [Matcher](matcher.go#L9) interface most importantly enforces the method
@@ -28,7 +28,7 @@ struct described below. Please read through that section first.
 ## Match Types
 
 **MatchType** is essentially an enumerator that represents the many possible
-comparitor operators on which some of the matchers rely. Those types are
+comparison operators on which some of the matchers rely. Those types are
 included here for reference in both their Golang and string-encoded
 representations:
 
@@ -72,7 +72,7 @@ Content | content
 
 **Ex. Usage**
 ```golang
-v := NewValue(Program, PrefixMatch, "elauneind_")
+v := NewValue(Program, PrefixMatch, "logCatcher")
 ```
 
 ### CLI
@@ -81,7 +81,7 @@ In order to make this package more accessible to CLI tools, a natural syntax
 developed which exposes the value matchers as functions, e.g.
 
 ```
-$ embargo exclusion add -e 'program(prefix_match, "elauneind_")'
+$ mycli exclusion add -e 'program(prefix_match, "logCatcher")'
 ```
 
 ### YAML
@@ -93,7 +93,7 @@ The YAML encoding of a value matcher is as follows:
 value_matcher:
   type: program
   match_type: prefix_match
-  value: 'elauneind_'
+  value: 'logCatcher'
 ```
 
 ## Facility Matcher
@@ -120,7 +120,7 @@ f := NewFacility(captainslog.Local6)
 A convenience function is also supplied in the CLI form:
 
 ```
-$ embargo ex add -e 'facility("local6")'
+$ mycli ex add -e 'facility("local6")'
 ```
 
 ### YAML
@@ -158,7 +158,7 @@ s := NewSeverity(LessThan, captainslog.Warn)
 A convenience function is also supplied in the CLI form:
 
 ```
-$ embargo ex add -e 'severity(lt, "warn")'
+$ mycli ex add -e 'severity(lt, "warn")'
 ```
 
 ### YAML
@@ -212,7 +212,7 @@ types.
 A convenience function is also supplied in the CLI form:
 
 ```
-$ embargo ex add -e 'kv("response.code", lt, 300)'
+$ mycli ex add -e 'kv("response.code", lt, 300)'
 ```
 
 ### YAML
@@ -268,7 +268,7 @@ A convenience function is also supplied in the CLI form:
 **Warning:** This is a contrived example and should never be added in real
 life!
 ```
-$ embargo ex add -e 'not(host(prefix_match, "prod-somehost"))'
+$ mycli ex add -e 'not(host(prefix_match, "prod-somehost"))'
 ```
 
 ### YAML
@@ -319,8 +319,8 @@ X and (Y or Z)
 So we may see, e.g.
 
 ```
-$ embargo ex add -e 'program(prefix_match, "elauneind_") and \
->                    not(program(exact_match, "elauneind_flux"))'
+$ mycli ex add -e 'program(prefix_match, "logCatcher") and \
+>                    not(program(exact_match, "logCatcher_staging"))'
 ```
 
 ### YAML
@@ -335,12 +335,12 @@ n_ary_op:
   - value_matcher:
       type: program
       match_type: prefix_match
-      value: 'elauneind_'
+      value: 'logCatcher'
   - unary_op:
       type: not
       matcher:
         value_matcher:
           type: program
           match_type: exact_match
-          value: 'elauneind_flux'
+          value: 'logCatcher_staging'
 ```

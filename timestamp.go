@@ -65,7 +65,7 @@ func (t *Timestamp) Decode(m map[string]interface{}) error {
 					return err
 				}
 			} else {
-				return fmt.Errorf("failed to decode severity matcher, severity is not a string")
+				return fmt.Errorf("failed to decode timestamp matcher, timestamp is not a string")
 			}
 		}
 	}
@@ -77,7 +77,7 @@ func (t *Timestamp) Decode(m map[string]interface{}) error {
 	return nil
 }
 
-// Encode encodes a Severity into the matcher map.
+// Encode encodes a Timestamp into the matcher map.
 func (t *Timestamp) Encode(out map[string]interface{}) {
 	out["match_type"] = t.MatchType.String()
 	out["timestamp"] = t.Timestamp.Time.Format(time.Stamp)

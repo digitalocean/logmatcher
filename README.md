@@ -3,7 +3,7 @@
 The `matcher` package contains the core expression language
 for matching `captainslog.SyslogMsg` data in an intuitive and expressive way.
 
-The [Matcher](matcher.go#L9) interface most importantly enforces the method
+The [Matcher](matcher.go#L9) interface most importantly provides the method
 `Matches(captainslog.SyslogMsg) bool`. There are several implementations of
 the interface in this package. Those include the following:
 * [Value](#value-matcher)
@@ -32,20 +32,20 @@ comparison operators on which some of the matchers rely. Those types are
 included here for reference in both their Golang and string-encoded
 representations:
 
-Golang | Encoded
------- | -------
-_**String Types**_ |  
-ExactMatch | exact_match
-PrefixMatch | prefix_match
-Contains | contains
-Regex | regex
-_**Numeric Types**_ | 
-LessThan | lt
-LessThanEqual | lte
-GreaterThan | gt
-GreaterThanEqual | gte
-_**Universal Types**_ | 
-Equals | equals
+| Golang                | Encoded      |
+|-----------------------|--------------|
+| _**String Types**_    |              |
+| ExactMatch            | exact_match  |
+| PrefixMatch           | prefix_match |
+| Contains              | contains     |
+| Regex                 | regex        |
+| _**Numeric Types**_   |              |
+| LessThan              | lt           |
+| LessThanEqual         | lte          |
+| GreaterThan           | gt           |
+| GreaterThanEqual      | gte          |
+| _**Universal Types**_ |              |
+| Equals                | equals       |
 
 It should become clearer in the following sections how these types are used.
 
@@ -64,24 +64,24 @@ func NewValue(t ValueType, m MatchType, v string) *Value
 
 Here, the `ValueType` can be one of (in Golang and string-encoded forms):
 
-Golang | Encoded
------- | -------
-Program | program
-Host | host
-Content | content
+| Golang  | Encoded |
+|---------|---------|
+| Program | program |
+| Host    | host    |
+| Content | content |
 
 **Ex. Usage**
 ```golang
-v := NewValue(Program, PrefixMatch, "logCatcher")
+v := NewValue(Program, PrefixMatch, "logCatcher_")
 ```
 
 ### CLI
 
-In order to make this package more accessible to CLI tools, a natural syntax
-developed which exposes the value matchers as functions, e.g.
+In order to make this package more accessible to CLI tools an expression language is provided, which exposes the 
+value matchers as functions. e.g:
 
 ```
-$ mycli exclusion add -e 'program(prefix_match, "logCatcher")'
+program(prefix_match, "logCatcher_")
 ```
 
 ### YAML
@@ -93,7 +93,7 @@ The YAML encoding of a value matcher is as follows:
 value_matcher:
   type: program
   match_type: prefix_match
-  value: 'logCatcher'
+  value: 'logCatcher_'
 ```
 
 ## Facility Matcher
@@ -120,7 +120,7 @@ f := NewFacility(captainslog.Local6)
 A convenience function is also supplied in the CLI form:
 
 ```
-$ mycli ex add -e 'facility("local6")'
+'facility("local6")'
 ```
 
 ### YAML
@@ -158,7 +158,7 @@ s := NewSeverity(LessThan, captainslog.Warn)
 A convenience function is also supplied in the CLI form:
 
 ```
-$ mycli ex add -e 'severity(lt, "warn")'
+severity(lt, "warn")
 ```
 
 ### YAML
@@ -212,7 +212,7 @@ types.
 A convenience function is also supplied in the CLI form:
 
 ```
-$ mycli ex add -e 'kv("response.code", lt, 300)'
+kv("response.code", lt, 300)
 ```
 
 ### YAML
@@ -268,7 +268,7 @@ A convenience function is also supplied in the CLI form:
 **Warning:** This is a contrived example and should never be added in real
 life!
 ```
-$ mycli ex add -e 'not(host(prefix_match, "prod-somehost"))'
+not(host(prefix_match, "prod-somehost"))
 ```
 
 ### YAML
@@ -319,8 +319,8 @@ X and (Y or Z)
 So we may see, e.g.
 
 ```
-$ mycli ex add -e 'program(prefix_match, "logCatcher") and \
->                    not(program(exact_match, "logCatcher_staging"))'
+'program(prefix_match, "logCatcher_") and \
+>  not(program(exact_match, "logCatcher_staging"))'
 ```
 
 ### YAML
@@ -335,7 +335,7 @@ n_ary_op:
   - value_matcher:
       type: program
       match_type: prefix_match
-      value: 'logCatcher'
+      value: 'logCatcher_'
   - unary_op:
       type: not
       matcher:

@@ -77,7 +77,7 @@ v := NewValue(Program, PrefixMatch, "logCatcher_")
 
 ### CLI
 
-In order to make this package more accessible to CLI tools an expression language is provided, which exposes the 
+To make this package more accessible to CLI tools, an expression language is provided which exposes the 
 value matchers as functions. e.g:
 
 ```
@@ -136,7 +136,7 @@ facility_matcher:
 ## Severity Matcher
 
 The **Severity** matcher is very similar to the Facility matcher, with the
-added difference to compare with the equivalence or less or greater than
+added ability to compare using the equals, less than, or greater than
 operators.
 
 ### Golang

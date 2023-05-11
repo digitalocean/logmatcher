@@ -33,9 +33,9 @@ func (t *Timestamp) Matches(m captainslog.SyslogMsg) bool {
 	case Equals:
 		return t.Timestamp.Time.Equal(m.Time)
 	case LessThan, LessThanEqual:
-		return t.Timestamp.Time.After(m.Time)
-	case GreaterThan, GreaterThanEqual:
 		return t.Timestamp.Time.Before(m.Time)
+	case GreaterThan, GreaterThanEqual:
+		return t.Timestamp.Time.After(m.Time)
 	default:
 		return false
 	}

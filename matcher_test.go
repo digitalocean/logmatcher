@@ -455,7 +455,6 @@ func TestTimestampMatcher(t *testing.T) {
 	}
 
 	e.MatchType = GreaterThan
-	e.Timestamp.Time = time.Date(1969, time.April, 20, 0, 0, 0, 0, time.UTC)
 
 	if want, got := false, e.Matches(m); want != got {
 		t.Errorf("want != got, want = %v, got = %v, time is %v", want, got, m.Time)

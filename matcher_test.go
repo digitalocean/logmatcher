@@ -445,18 +445,15 @@ func TestTimestampMatcher(t *testing.T) {
 		t.Errorf("want != got, want = %v, got = %v", want, got)
 	}
 
-	e = NewTimestamp(LessThan, captainslog.Time{
-		Time:       time.Date(1969, time.April, 20, 0, 0, 0, 0, time.UTC),
-		TimeFormat: time.Stamp,
-	})
+	m.SetTime(time.Date(1969, time.April, 20, 0, 0, 0, 0, time.UTC))
 
-	if want, got := true, e.Matches(m); want != got {
+	if want, got := false, e.Matches(m); want != got {
 		t.Errorf("want != got, want = %v, got = %v, message time is %v, compared with %v", want, got, m.Time.Format(time.Stamp), e.Timestamp.Time.Format(time.Stamp))
 	}
 
 	e.MatchType = GreaterThan
 
-	if want, got := false, e.Matches(m); want != got {
+	if want, got := true, e.Matches(m); want != got {
 		t.Errorf("want != got, want = %v, got = %v, time is %v", want, got, m.Time)
 	}
 

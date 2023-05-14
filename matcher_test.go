@@ -446,6 +446,7 @@ func TestTimestampMatcher(t *testing.T) {
 	}
 
 	m.SetTime(time.Date(1969, time.April, 20, 0, 0, 0, 0, time.UTC))
+	e.MatchType = LessThan
 
 	if want, got := false, e.Matches(m); want != got {
 		t.Errorf("want != got, want = %v, got = %v, message time is %v, compared with %v", want, got, m.Time.Format(time.Stamp), e.Timestamp.Time.Format(time.Stamp))
@@ -457,4 +458,49 @@ func TestTimestampMatcher(t *testing.T) {
 		t.Errorf("want != got, want = %v, got = %v, time is %v", want, got, m.Time)
 	}
 
+}
+
+func TestHostnameMatcher(t *testing.T) {
+	hostExact := NewHostname(ExactMatch, "cool.website.com:5757")
+	hostPrefix := NewHostname(PrefixMatch, "coo")
+	hostContains := NewHostname(Contains, "website")
+	hostRegex := NewHostname(Regex, "c.o")
+
+	m := captainslog.NewSyslogMsg()
+	m.Host = "cool.website.com:5757"
+
+	if want, got := true, hostExact.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+	m.Host = "foo"
+	if want, got := false, hostExact.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+
+	m.Host = "cool.website.com:5757"
+	if want, got := true, hostPrefix.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+	m.Host = "bar"
+	if want, got := false, hostPrefix.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+
+	m.Host = "cool.website.com:5757"
+	if want, got := true, hostContains.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+	m.Host = "foo"
+	if want, got := false, hostContains.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+
+	m.Host = "cool.website.com:5757"
+	if want, got := true, hostRegex.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+	m.Host = "bar"
+	if want, got := false, hostRegex.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
 }

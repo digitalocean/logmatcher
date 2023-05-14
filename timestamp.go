@@ -13,7 +13,7 @@ type Timestamp struct {
 	Timestamp captainslog.Time
 }
 
-// NewTimestamp returns a new timestamp with the specified time
+// NewTimestamp returns a new timestamp matcher with the specified time and matchType
 func NewTimestamp(m MatchType, t captainslog.Time) *Timestamp {
 	return &Timestamp{
 		MatchType: m,
@@ -21,7 +21,7 @@ func NewTimestamp(m MatchType, t captainslog.Time) *Timestamp {
 	}
 }
 
-// String converts a Timestamp to its corresponding string representation.
+// String converts a Timestamp matcher to its corresponding string representation.
 func (t Timestamp) String() string {
 	return fmt.Sprintf("timestamp(%s, %s)", t.MatchType.String(), t.Timestamp.Time.Format(time.Stamp))
 }

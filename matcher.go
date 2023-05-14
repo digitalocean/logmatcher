@@ -77,6 +77,10 @@ func Decode(m map[string]interface{}) (Matcher, error) {
 			timestamp := &Timestamp{}
 			err := timestamp.Decode(matcher)
 			return timestamp, err
+		case "hostname_matcher":
+			hostname := &Hostname{}
+			err := hostname.Decode(matcher)
+			return hostname, err
 		}
 	}
 
@@ -98,6 +102,10 @@ func Encode(in Matcher, out map[string]interface{}) {
 		out["timestamp_matcher"] = make(map[string]interface{})
 		m := in.(*Timestamp)
 		m.Encode(out["timestamp_matcher"].(map[string]interface{}))
+	case *Hostname:
+		out["hostname_matcher"] = make(map[string]interface{})
+		m := in.(*Hostname)
+		m.Encode(out["hostname_matcher"].(map[string]interface{}))
 	case *KV:
 		out["kv_matcher"] = make(map[string]interface{})
 		m := in.(*KV)

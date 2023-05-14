@@ -20,7 +20,7 @@ func NewSeverity(t MatchType, f captainslog.Severity) *Severity {
 	}
 }
 
-// String converts a Severity to its corresponding string representation.
+// String converts a Severity matcher to its corresponding string representation.
 func (s Severity) String() string {
 	return fmt.Sprintf("severity(%s, %s)", s.MatchType.String(), s.Severity)
 }

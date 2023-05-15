@@ -73,6 +73,10 @@ func Decode(m map[string]interface{}) (Matcher, error) {
 			severity := &Severity{}
 			err := severity.Decode(matcher)
 			return severity, err
+		case "timestamp_matcher":
+			timestamp := &Timestamp{}
+			err := timestamp.Decode(matcher)
+			return timestamp, err
 		}
 	}
 
@@ -90,6 +94,10 @@ func Encode(in Matcher, out map[string]interface{}) {
 		out["facility_matcher"] = make(map[string]interface{})
 		m := in.(*Facility)
 		m.Encode(out["facility_matcher"].(map[string]interface{}))
+	case *Timestamp:
+		out["timestamp_matcher"] = make(map[string]interface{})
+		m := in.(*Timestamp)
+		m.Encode(out["timestamp_matcher"].(map[string]interface{}))
 	case *KV:
 		out["kv_matcher"] = make(map[string]interface{})
 		m := in.(*KV)

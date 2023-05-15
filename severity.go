@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/captainslog"
 )
 
-// Severity represents a syslog facility matcher
+// Severity represents a syslog severity matcher
 type Severity struct {
 	MatchType MatchType
 	Severity  captainslog.Severity
@@ -25,7 +25,7 @@ func (s Severity) String() string {
 	return fmt.Sprintf("severity(%s, %s)", s.MatchType.String(), s.Severity)
 }
 
-// Matches returns true if the Severity matches the supplied SyslogMsg.
+// Matches returns true if the Severity aligns with the supplied SyslogMsg sev and MatchType
 func (s *Severity) Matches(m captainslog.SyslogMsg) bool {
 	// Syslog severity values are lower for higher severities.
 	switch s.MatchType {

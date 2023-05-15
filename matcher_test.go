@@ -3,6 +3,7 @@ package matcher
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/digitalocean/captainslog"
 )
@@ -429,4 +430,31 @@ func TestSeverityMatcher(t *testing.T) {
 	if want, got := false, e.Matches(m); want != got {
 		t.Errorf("want != got, want = %v, got = %v", want, got)
 	}
+}
+
+func TestTimestampMatcher(t *testing.T) {
+	e := NewTimestamp(Equals, captainslog.Time{
+		Time:       time.Now(),
+		TimeFormat: time.Stamp,
+	})
+
+	m := captainslog.NewSyslogMsg()
+	m.SetTime(time.Now())
+
+	if want, got := false, e.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v", want, got)
+	}
+
+	m.SetTime(time.Date(1969, time.April, 20, 0, 0, 0, 0, time.UTC))
+
+	if want, got := false, e.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v, message time is %v, compared with %v", want, got, m.Time.Format(time.Stamp), e.Timestamp.Time.Format(time.Stamp))
+	}
+
+	e.MatchType = GreaterThan
+
+	if want, got := true, e.Matches(m); want != got {
+		t.Errorf("want != got, want = %v, got = %v, time is %v", want, got, m.Time)
+	}
+
 }

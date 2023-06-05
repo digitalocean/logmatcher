@@ -344,3 +344,10 @@ n_ary_op:
           match_type: exact_match
           value: 'logCatcher_staging'
 ```
+
+## License
+
+The project is licensed under the Apache License, Version 2.0.
+
+You can find a copy of the license in the [LICENSE](LICENSE) file or visit the [Apache website](http://www.apache.org/licenses/LICENSE-2.0) for more details.
+

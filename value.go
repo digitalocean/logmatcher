@@ -13,16 +13,13 @@ type ValueType int
 
 // Value types.
 const (
-	Host ValueType = iota
-	Program
+	Program ValueType = iota
 	Content
 )
 
 // String converts a ValueType to its corresponding string representation.
 func (t ValueType) String() string {
 	switch t {
-	case Host:
-		return "host"
 	case Program:
 		return "program"
 	case Content:
@@ -36,8 +33,6 @@ func (t ValueType) String() string {
 // string representation.
 func (t *ValueType) FromString(s string) error {
 	switch s {
-	case "host":
-		*t = Host
 	case "program":
 		*t = Program
 	case "content":
@@ -75,8 +70,6 @@ func (v Value) String() string {
 func (v *Value) Matches(m captainslog.SyslogMsg) bool {
 	var val string
 	switch v.Type {
-	case Host:
-		val = m.Host
 	case Program:
 		val = m.Tag.Program
 	case Content:

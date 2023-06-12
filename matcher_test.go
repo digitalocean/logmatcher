@@ -9,7 +9,7 @@ import (
 )
 
 func TestNewValue(t *testing.T) {
-	v := NewValue(Host, PrefixMatch, "topo")
+	v := NewValue(Program, PrefixMatch, "topo")
 	if v == nil {
 		t.Errorf("got nil ValueMatcher")
 	}
@@ -24,9 +24,9 @@ func TestNewUnaryOp(t *testing.T) {
 
 func TestNewNAryOp(t *testing.T) {
 	o := NewNAryOp(And,
-		NewValue(Program, Contains, "bre"),
+		NewHostname(Contains, "bre"),
 		NewUnaryOp(Not,
-			NewValue(Host, Regex, "bad-host.*nyc3.internal.digitalocean.com")))
+			NewHostname(Regex, "bad-host.*nyc3.internal.digitalocean.com")))
 	if o == nil {
 		t.Errorf("got nil UnaryOp")
 	}
@@ -51,7 +51,7 @@ func TestNot(t *testing.T) {
 
 func TestAnd(t *testing.T) {
 	o := NewNAryOp(And,
-		NewValue(Host, ExactMatch, "foo"),
+		NewHostname(ExactMatch, "foo"),
 		NewValue(Program, ExactMatch, "bar"))
 
 	m := captainslog.NewSyslogMsg()
@@ -78,7 +78,7 @@ func TestAnd(t *testing.T) {
 
 func TestOr(t *testing.T) {
 	o := NewNAryOp(Or,
-		NewValue(Host, ExactMatch, "foo"),
+		NewHostname(ExactMatch, "foo"),
 		NewValue(Program, ExactMatch, "bar"))
 
 	m := captainslog.NewSyslogMsg()

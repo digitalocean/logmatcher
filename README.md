@@ -52,7 +52,7 @@ It should become clearer in the following sections how these types are used.
 ## Value Matcher
 
 The **Value** matcher is intended to match some basic syslog fields such as
-the host, program or content of a message.
+the program name or content of a message.
 
 ### Golang
 
@@ -67,7 +67,6 @@ Here, the `ValueType` can be one of (in Golang and string-encoded forms):
 | Golang  | Encoded |
 |---------|---------|
 | Program | program |
-| Host    | host    |
 | Content | content |
 
 **Ex. Usage**
@@ -241,10 +240,15 @@ kv_matcher:
   bool_value: <true or false>
 ```
 
+
+## Dependent Operators
+These operators are exposed as `matchers`, but in and of themselves do not perform any matching. 
+Therefore, they must be used in conjunction with one or more of the matchers described above.
+
 ## Unary Operator
 
 The **UnaryOp** matcher is a generic matcher that allows for a unary
-operator to apply to another matcher. In reality, the only supported
+operator to apply to another matcher. In practice, the only supported
 operator is the `not` operation.
 
 ### Golang
@@ -265,7 +269,7 @@ o := NewUnaryOp(Not, someMatcher)
 
 A convenience function is also supplied in the CLI form:
 
-**Warning:** This is a contrived example and should never be added in real
+**Warning:** This is a contrived example and should never be used in real
 life!
 ```
 not(host(prefix_match, "prod-somehost"))
@@ -289,7 +293,7 @@ unary_op:
 ## N-Ary Operator
 
 The **NAryOp** matcher is a generic matcher that allows for an n-ary
-operator to apply to another matcher. In reality, the only supported
+operator to apply to another matcher. In practice, the only supported
 operators are the `and` and `or` operations.
 
 ### Golang
@@ -349,5 +353,6 @@ n_ary_op:
 
 The project is licensed under the Apache License, Version 2.0.
 
-You can find a copy of the license in the [LICENSE](LICENSE) file or visit the [Apache website](http://www.apache.org/licenses/LICENSE-2.0) for more details.
+You can find a copy of the license in the [LICENSE](LICENSE) file or visit the 
+[Apache website](http://www.apache.org/licenses/LICENSE-2.0) for more details.
 

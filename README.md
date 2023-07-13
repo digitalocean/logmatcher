@@ -112,28 +112,27 @@ func NewHostname(m MatchType, n string) *Hostname
 
 **Ex. Usage**
 ```golang
-v := NewHostname(PrefixMatch, "logs-s2r2-")
+v := NewHostname(PrefixMatch, "logs-staging-")
 ```
 
 ### CLI
 
-To make this package more accessible to CLI tools, an expression language is provided which exposes the 
- matchers as functions. e.g:
+A convenience function is also supplied in the CLI form:
 
 ```
-program(prefix_match, "logCatcher_")
+hostname(prefix_match, "logs-staging-")
 ```
 
 ### YAML
 
-The YAML encoding of a value matcher is as follows:
+The YAML encoding of a hostname matcher is as follows:
 
 ```yaml
 ---
 value_matcher:
   type: program
   match_type: prefix_match
-  value: 'logCatcher_'
+  value: 'logs-staging-'
 ```
 
 ## Facility Matcher
@@ -354,7 +353,7 @@ A convenience function is also supplied in the CLI form:
 **Warning:** This is a contrived example and should never be used in real
 life!
 ```
-not(host(prefix_match, "prod-somehost"))
+not(program(prefix_match, "prod-someprogram"))
 ```
 
 ### YAML
@@ -367,9 +366,9 @@ unary_op:
   type: not
   matcher:
     value_matcher:
-      type: host
+      type: program
       match_type: prefix_match
-      value: 'prod-somehost'
+      value: 'prod-someprogram'
 ```
 
 ## N-Ary Operator

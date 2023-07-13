@@ -6,9 +6,11 @@ for matching `captainslog.SyslogMsg` data in an intuitive and expressive way.
 The [Matcher](matcher.go#L9) interface most importantly provides the method
 `Matches(captainslog.SyslogMsg) bool`. There are several implementations of
 the interface in this package. Those include the following:
+* [Hostname](#hostname-matcher)
 * [Value](#value-matcher)
 * [Facility](#facility-matcher)
 * [Severity](#severity-matcher)
+* [Timestamp](#timestamp-matcher)
 * [KV](#key-value-matcher)
 * [UnaryOp](#unary-operator)
 * [NAryOp](#n-ary-operator)
@@ -62,7 +64,7 @@ To instantiate a new value matcher in Golang, you can call:
 func NewValue(t ValueType, m MatchType, v string) *Value
 ```
 
-Here, the `ValueType` can be one of (in Golang and string-encoded forms):
+Here, the `ValueType` can be one of the following (in Golang and string-encoded forms):
 
 | Golang  | Encoded |
 |---------|---------|
@@ -78,6 +80,45 @@ v := NewValue(Program, PrefixMatch, "logCatcher_")
 
 To make this package more accessible to CLI tools, an expression language is provided which exposes the 
 value matchers as functions. e.g:
+
+```
+program(prefix_match, "logCatcher_")
+```
+
+### YAML
+
+The YAML encoding of a value matcher is as follows:
+
+```yaml
+---
+value_matcher:
+  type: program
+  match_type: prefix_match
+  value: 'logCatcher_'
+```
+
+## Hostname Matcher
+
+The **Hostname** matcher is designed to match the `Hostname` field found in the header of a syslog message
+
+
+### Golang
+
+To instantiate a new hostname matcher in Golang, you can call:
+
+```golang
+func NewHostname(m MatchType, n string) *Hostname
+```
+
+**Ex. Usage**
+```golang
+v := NewHostname(PrefixMatch, "logs-s2r2-")
+```
+
+### CLI
+
+To make this package more accessible to CLI tools, an expression language is provided which exposes the 
+ matchers as functions. e.g:
 
 ```
 program(prefix_match, "logCatcher_")
@@ -143,7 +184,7 @@ operators.
 To instantiate in Go, simply call:
 
 ```golang
-func NewSeverity(t MatchType, s captainslog.Severity) *Severity
+func NewSeverity(m MatchType, s captainslog.Severity) *Severity
 ```
 
 **Ex. Usage**
@@ -169,6 +210,47 @@ And in YAML:
 severity_matcher:
   match_type: lt
   severity: warn
+```
+
+## Timestamp Matcher
+
+The **Timestamp** matcher allows you to match on log times using the equals, less than (before), or greater than (after)
+operators. Note: ≤ and ≥ can also be used, but evaluate the same as their non-equal counterparts.
+
+### Golang
+
+To instantiate in Go, simply call:
+
+```golang
+func NewTimestamp(m MatchType, t captainslog.Time) *Timestamp
+```
+
+**Ex. Usage**
+
+```golang
+	e := NewTimestamp(Equals, captainslog.Time{
+Time:       time.Now(),
+TimeFormat: time.Stamp,
+})
+```
+
+### CLI
+
+A convenience function is also supplied in the CLI form:
+
+```
+timestamp(lt, "Jul 13 15:45:30" )
+```
+
+### YAML
+
+And in YAML:
+
+```yaml
+---
+severity_matcher:
+  match_type: lt
+  timestamp: "Jul 13 15:45:30"
 ```
 
 ## Key-Value Matcher

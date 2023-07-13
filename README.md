@@ -214,7 +214,7 @@ severity_matcher:
 ## Timestamp Matcher
 
 The **Timestamp** matcher allows you to match on log times using the equals, less than (before), or greater than (after)
-operators. Note: ≤ and ≥ can also be used, but evaluate the same as their non-equal counterparts.
+operators. Note: LessThanEqual and GreaterThanEqual can also be used, but evaluate the same as their non-equal counterparts.
 
 ### Golang
 
